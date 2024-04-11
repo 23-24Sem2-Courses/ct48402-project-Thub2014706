@@ -1,13 +1,18 @@
+import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/ui/products/product_grid_tile.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductsGrid extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final productsManger = ProductsManager();
-    final products = productsManger.items;
+  //   final productsManger = ProductsManager();
+  //   final products = productsManger.items;
+    final products = context.select<ProductsManager, List<Product>>(
+      (productManager) => productManager.items
+    );
 
     return Container(
       padding: const EdgeInsets.all(16),

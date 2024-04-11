@@ -1,9 +1,10 @@
+import 'package:ct484_project/ui/products/edit_product_screen.dart';
 import 'package:ct484_project/ui/products/product_list_tile.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
 
 class ProductsScreen extends StatelessWidget {
-  static const routeName = '/manager-products';
+  // static const routeName = '/manager-products';
 
   const ProductsScreen({
     super.key
@@ -13,13 +14,6 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // const Image(
-        //         image: AssetImage('assets/images/logo.jpg'),
-        //         width: 40,
-        //         height: 40,
-        //         fit: BoxFit.cover, 
-        //         alignment: Alignment.center,
-        //       ),
         title: const Text(
           'Quản lý sản phẩm', 
           style: TextStyle(color: Color.fromARGB(255, 245, 245, 245)),
@@ -27,7 +21,9 @@ class ProductsScreen extends StatelessWidget {
         actions: <Widget>[
           AddProductButton(
             onPressed: () {
-              print('add');
+              Navigator.of(context).pushNamed(
+                EditProductScreen.routerName
+              );
             },
           )
         ],

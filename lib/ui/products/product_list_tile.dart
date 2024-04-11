@@ -1,5 +1,8 @@
 import 'package:ct484_project/models/product.dart';
+import 'package:ct484_project/ui/products/edit_product_screen.dart';
+import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductListTile extends StatelessWidget {
   final Product product;
@@ -22,11 +25,15 @@ class ProductListTile extends StatelessWidget {
           children: <Widget>[
             EditProductButton(
               onPressed: () {
-                print('edit');
+                Navigator.of(context).pushNamed(
+                  EditProductScreen.routerName,
+                  arguments: product.id
+                );
               },
             ),
             DeleteProductButton(
               onPressed: () {
+                context.read<ProductsManager>().deleteProduct(product!);
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(

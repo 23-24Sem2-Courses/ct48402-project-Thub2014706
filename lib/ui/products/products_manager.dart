@@ -1,6 +1,7 @@
 import 'package:ct484_project/models/product.dart';
+import 'package:flutter/foundation.dart';
 
-class ProductsManager {
+class ProductsManager with ChangeNotifier {
   final List<Product> _items = [
     Product(
       id: 'p1',
@@ -118,6 +119,31 @@ class ProductsManager {
       return _items.firstWhere((item) => item.id == id);
     } catch (error) {
       return null;
+    }
+  }
+
+  void addProduct(Product product) {
+    _items.add(
+      product.copyWith(
+        id: 'p${DateTime.now().toIso8601String()}'
+      )
+    );
+    notifyListeners();
+  }
+
+  void updateProduct(Product product) {
+    final index = _items.indexWhere((element) => element.id == product.id);
+    if (index >= 0) {
+      _items[index] = product;
+      notifyListeners();
+    }
+  }
+
+  void deleteProduct(Product product) {
+    final index = _items.indexWhere((element) => element.id == product.id);
+    if (index >= 0) {
+      _items.removeAt(index);
+      notifyListeners();
     }
   }
 }
