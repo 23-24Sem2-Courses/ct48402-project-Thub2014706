@@ -33,7 +33,7 @@ class ProductListTile extends StatelessWidget {
             ),
             DeleteProductButton(
               onPressed: () {
-                context.read<ProductsManager>().deleteProduct(product!);
+                context.read<ProductsManager>().deleteProduct(product.id!);
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(

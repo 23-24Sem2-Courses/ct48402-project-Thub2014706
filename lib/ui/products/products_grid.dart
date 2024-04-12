@@ -25,14 +25,18 @@ class ProductsGrid extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           for (int i = 0; i < products.length; i = i + 2) (
-            Row(     
-              mainAxisAlignment: MainAxisAlignment.center, 
-              children: [
-                ProductGridTile(products[i]),
-                const SizedBox(width: 20),
-                ProductGridTile(products[i + 1]),
-              ],
+            Container(
+              margin: const EdgeInsets.only(bottom: 15),
+              child: Row(     
+                // mainAxisAlignment: MainAxisAlignment.center, 
+                children: [
+                  ProductGridTile(products[i]),
+                  const SizedBox(width: 20),
+                  if (i + 1 < products.length) ProductGridTile(products[i + 1]),
+                ],
+              ),
             )
+            
           )
         ],
       ),

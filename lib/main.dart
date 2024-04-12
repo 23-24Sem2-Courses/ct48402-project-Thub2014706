@@ -1,3 +1,5 @@
+import 'package:ct484_project/ui/auth/auth_manager.dart';
+import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
 import 'package:ct484_project/ui/products/edit_product_screen.dart';
 import 'package:ct484_project/ui/products/product_detail_screen.dart';
@@ -21,24 +23,27 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (ctx) => ProductsManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => AuthManager(),
         )
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'TWOT WATCH',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
-            backgroundColor: Color.fromARGB(255, 48, 43, 55),
+            backgroundColor: Color.fromARGB(255, 247, 167, 46),
             elevation: 4,
             // shadowColor: black.shadow,
           ),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 255, 232, 201)),
           useMaterial3: true,
         ),
         home: HomeScreen(),
         routes: {
           CartScreen.routeName: (context) => const SafeArea(child: CartScreen()),
-          // ProductsScreen.routeName: (context) => const SafeArea(child: ProductsScreen()),
+          AuthScreen.routeName: (context) => const SafeArea(child: AuthScreen()),
         },
 
         onGenerateRoute: (settings) {
@@ -48,14 +53,14 @@ class MyApp extends StatelessWidget {
               builder: (context) {
                 return SafeArea(
                   child: ProductDetailScreen(
-                    ProductsManager().findById(idProduct)!,
+                    context.read<ProductsManager>().findById(idProduct)!,
                   )
                 );
               }
             );
           }
           if (settings.name == EditProductScreen.routerName) {
-            final idProduct = settings.arguments as String;
+            final idProduct = settings.arguments as String?;
             return MaterialPageRoute(
               builder: (context) {
                 return SafeArea(

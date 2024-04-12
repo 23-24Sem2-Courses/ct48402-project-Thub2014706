@@ -47,7 +47,7 @@ class ActionButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed, 
       child: Text(
-        actionText ?? 'Okay',
+        actionText ?? 'OK',
         style: const TextStyle(
           color: Colors.black,
           fontSize: 18

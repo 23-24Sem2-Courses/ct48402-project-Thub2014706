@@ -2,6 +2,7 @@ import 'package:ct484_project/ui/products/edit_product_screen.dart';
 import 'package:ct484_project/ui/products/product_list_tile.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductsScreen extends StatelessWidget {
   // static const routeName = '/manager-products';
@@ -40,19 +41,23 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productsManager = ProductsManager();
+    // final productsManager = ProductsManager();
 
-    return ListView.builder(
-      itemCount: productsManager.itemCount,
-      itemBuilder: (ctx, i) => Column(
-        children: [
-          ProductListTile(
-            productsManager.items[i],
+    return Consumer<ProductsManager>(
+      builder: (context, productsManager, child) {
+        return ListView.builder(
+          itemCount: productsManager.itemCount,
+          itemBuilder: (ctx, i) => Column(
+            children: [
+              ProductListTile(
+                productsManager.items[i],
+              ),
+              const Divider(),
+            ],
           ),
-          const Divider(),
-        ],
-      ),
-    );
+        );
+      }
+    );   
   }
 }
 

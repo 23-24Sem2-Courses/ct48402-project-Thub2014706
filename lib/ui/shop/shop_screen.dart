@@ -1,3 +1,6 @@
+import 'package:ct484_project/models/auth_token.dart';
+import 'package:ct484_project/ui/auth/auth_manager.dart';
+import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
 import 'package:ct484_project/ui/products/products_grid.dart';
@@ -14,7 +17,7 @@ class ShopScreen extends StatelessWidget {
           Row(
             children: [
               const Image(
-                image: AssetImage('assets/images/logo.jpg'),
+                image: AssetImage('assets/images/logo.png'),
                 width: 40,
                 height: 40,
                 fit: BoxFit.cover, // Cách hình ảnh được căn chỉnh trong không gian được chỉ định
@@ -54,12 +57,26 @@ class ShopScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.account_circle_rounded),
-                color: Colors.white,
-                onPressed: () {
-                },
-              ),
+              // AuthToken().isValid != false ?
+                IconButton(
+                  icon: const Icon(Icons.login),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(
+                        AuthScreen.routeName,
+                      );
+                  },
+                ),
+                // : IconButton(
+
+                //   icon: const Icon(Icons.logout),
+                //   color: Colors.white,
+                //   onPressed: () {
+                //     // Navigator.of(context).pushNamed(
+                //     //     AuthScreen.routeName,
+                //     //   );
+                //   },
+                // ),
               TopRightBadge(
                 data: CartManager().itemCount,
                 child: IconButton(
@@ -122,9 +139,12 @@ class ShopScreen extends StatelessWidget {
               return Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const  EdgeInsets.symmetric(horizontal: 5.0),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   // color: Colors.amber
-                  image: DecorationImage(image: AssetImage('assets/images/green.jpg'), fit: BoxFit.cover, )
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/banner${i}.jpg'), 
+                    fit: BoxFit.cover, 
+                  )
                 ),
                 // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
               );

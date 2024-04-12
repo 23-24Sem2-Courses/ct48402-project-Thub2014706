@@ -14,7 +14,7 @@ class ProductGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 160,
+      width: 170,
       child: Card(
         color: Colors.white,      
         shape: RoundedRectangleBorder(
@@ -22,7 +22,7 @@ class ProductGridTile extends StatelessWidget {
         ),
         elevation: 5, //do bong
         child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(10),
           child: GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(
@@ -47,13 +47,13 @@ class ProductGridTile extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  product.information,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
+                // const SizedBox(height: 8),
+                // Text(
+                //   product.information,
+                //   style: const TextStyle(
+                //     fontSize: 16,
+                //   ),
+                // ),
                 const SizedBox(height: 8),
                 Text(
                   '\$${product.price.toStringAsFixed(2)}',

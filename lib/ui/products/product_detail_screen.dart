@@ -192,10 +192,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-        color: const Color.fromARGB(255, 55, 147, 50),
-        height: 70,
+        color: const Color.fromARGB(255, 247, 167, 46),
+        height: 60,
         // child: Tooltip(
-          child: OutlinedButton.icon(
+          child: TextButton.icon(
             onPressed: () {
               setState(() {
                 _quantity = 1;
@@ -294,7 +294,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                backgroundColor: Color.fromARGB(255, 121, 121, 121), // Màu nền của SnackBar
+                                backgroundColor: Color.fromARGB(255, 255, 255, 255), // Màu nền của SnackBar
                                 duration: Duration(seconds: 2), // Thời gian hiển thị
                                 behavior: SnackBarBehavior.floating, // Hiển thị ở giữa màn hình
                               ),
@@ -313,10 +313,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             },
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(horizontal: 40),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              side: const BorderSide(color: Color.fromARGB(255, 192, 191, 191))
             ),
             icon: const Icon(Icons.shopping_cart, color: Color.fromARGB(255, 255, 255, 255), ),
             label: const Text(
