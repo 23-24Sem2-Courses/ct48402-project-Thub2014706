@@ -20,8 +20,7 @@ class AuthService {
     return 'https://identitytoolkit.googleapis.com/v1/accounts:$method?key=$_apiKey';
   }
 
-  Future<AuthToken> _authenticate(
-      String email, String password, String method) async {
+  Future<AuthToken> _authenticate(String email, String password, String method) async {
     try {
       final url = Uri.parse(_buildAuthUrl(method));
       final response = await http.post(

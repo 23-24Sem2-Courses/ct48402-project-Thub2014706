@@ -1,14 +1,29 @@
-import 'package:ct484_project/models/auth_token.dart';
 import 'package:ct484_project/ui/auth/auth_manager.dart';
-import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
 import 'package:ct484_project/ui/products/products_grid.dart';
+import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:ct484_project/ui/products/top_right_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:provider/provider.dart';
 
-class ShopScreen extends StatelessWidget {
+class ShopScreen extends StatefulWidget {
+  const ShopScreen({super.key});
+
+  @override
+  State<ShopScreen> createState() => _ShopScreenState();
+}
+
+class _ShopScreenState extends State<ShopScreen> {
+  late Future<void> _fetchProducts;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts = context.read<ProductsManager>().fetchProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,26 +72,13 @@ class ShopScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              // AuthToken().isValid != false ?
-                IconButton(
-                  icon: const Icon(Icons.login),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                        AuthScreen.routeName,
-                      );
-                  },
-                ),
-                // : IconButton(
-
-                //   icon: const Icon(Icons.logout),
-                //   color: Colors.white,
-                //   onPressed: () {
-                //     // Navigator.of(context).pushNamed(
-                //     //     AuthScreen.routeName,
-                //     //   );
-                //   },
-                // ),
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                color: Colors.white,
+                onPressed: () {
+                  // context.read<AuthManager>().logout();
+                },
+              ),
               TopRightBadge(
                 data: CartManager().itemCount,
                 child: IconButton(
@@ -94,15 +96,25 @@ class ShopScreen extends StatelessWidget {
         ],
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPromotionBanner(),
-            ProductsGrid(),
-          ],
-        ),
-      ),
+      body: FutureBuilder(
+        future: _fetchProducts,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPromotionBanner(),
+                  ProductsGrid(),
+                ],
+              ),
+            );
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      )      
     );
   }
 }

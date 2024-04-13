@@ -100,12 +100,14 @@ class _EditProductScreen extends State<EditProductScreen> {
 
       final productsManager = context.read<ProductsManager>();
       if (_editedProduct.id != null) {
-        productsManager.updateProduct(_editedProduct);
+        await productsManager.updateProduct(_editedProduct);
       } else {
-        productsManager.addProduct(_editedProduct);
+        await productsManager.addProduct(_editedProduct);
       }
     } catch (e) {
-      await showErrorDialog(context, 'Đã xảy ra sự cố.');
+      if (mounted) {
+        await showErrorDialog(context, 'Đã xảy ra sự cố.');
+      }
     }
     
     setState(() {

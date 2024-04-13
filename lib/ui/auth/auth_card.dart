@@ -49,6 +49,10 @@ class _AuthCardState extends State<AuthCard> {
               _authData['password']!,
             );
       }
+      Navigator.of(context)
+        ..pop()
+        ..pushReplacementNamed('/');
+
     } catch (error) {
       if (context.mounted) {
         showErrorDialog(
@@ -78,9 +82,9 @@ class _AuthCardState extends State<AuthCard> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.sizeOf(context);
     return Container(
-      height: _authMode == AuthMode.signup ? 320 : 260,
+      height: _authMode == AuthMode.signup ? 320 : 320,
       constraints:
-          BoxConstraints(minHeight: _authMode == AuthMode.signup ? 320 : 260),
+          BoxConstraints(minHeight: _authMode == AuthMode.signup ? 380 : 320),
       width: deviceSize.width * 0.75,
       padding: const EdgeInsets.all(16.0),
       child: Form(

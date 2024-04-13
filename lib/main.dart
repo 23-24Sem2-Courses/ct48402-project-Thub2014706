@@ -6,10 +6,12 @@ import 'package:ct484_project/ui/products/product_detail_screen.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:ct484_project/ui/products/products_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import './ui/home.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 
@@ -22,10 +24,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => ProductsManager(),
-        ),
-        ChangeNotifierProvider(
           create: (ctx) => AuthManager(),
+        ),
+        ChangeNotifierProxyProvider<AuthManager, ProductsManager>(
+          create: (ctx) => ProductsManager(), 
+          update: (ctx, authManager, productsManager) {
+            productsManager!.authToken = authManager.authToken;
+            return productsManager;
+          }
         )
       ],
       child: MaterialApp(

@@ -29,7 +29,21 @@ class ProductsScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const ProductList(),
+      body: FutureBuilder(
+        future: context.read<ProductsManager>().fetchProducts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return RefreshIndicator(
+            onRefresh: () =>
+              context.read<ProductsManager>().fetchProducts(),
+            child: const ProductList(),
+          );
+        },
+      )    
     );
   }
 }

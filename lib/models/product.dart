@@ -28,5 +28,24 @@ class Product {
       price: price ?? this.price,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'information': information,
+      'price': price,
+      'images': images,
+    };
+  }
+
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'],
+      name: json['name'], 
+      images: json['images'], 
+      information: json['information'], 
+      price: json['price']
+    );
+  }
   
 }
