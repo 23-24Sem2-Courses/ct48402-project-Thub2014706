@@ -3,7 +3,7 @@ import 'package:ct484_project/models/product.dart';
 class CartItem {
   final String id;
   final int quantity;
-  final double totalPrice;
+  final int totalPrice;
   final Product product;
 
   CartItem({
@@ -16,7 +16,7 @@ class CartItem {
   CartItem copyWith({
     String? id,
     int? quantity,
-    double? totalPrice,
+    int? totalPrice,
     Product? product,
   }) {
     return CartItem(

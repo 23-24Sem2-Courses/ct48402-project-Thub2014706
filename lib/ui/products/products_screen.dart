@@ -30,7 +30,7 @@ class ProductsScreen extends StatelessWidget {
         ],
       ),
       body: FutureBuilder(
-        future: context.read<ProductsManager>().fetchProducts(),
+        future: context.read<ProductsManager>().fetchProducts(null),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -39,7 +39,7 @@ class ProductsScreen extends StatelessWidget {
           }
           return RefreshIndicator(
             onRefresh: () =>
-              context.read<ProductsManager>().fetchProducts(),
+              context.read<ProductsManager>().fetchProducts(null),
             child: const ProductList(),
           );
         },

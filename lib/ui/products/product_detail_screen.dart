@@ -98,7 +98,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               child: Text(
-                '\$${product.price.toStringAsFixed(2)}',
+                '${product.price.toString().replaceAllMapped(
+                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                  (Match m) => '${m[1]}.',
+                )}đ',
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: 25,

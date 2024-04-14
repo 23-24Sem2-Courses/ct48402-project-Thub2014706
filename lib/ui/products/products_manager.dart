@@ -4,29 +4,7 @@ import 'package:ct484_project/services/products_service.dart';
 import 'package:flutter/foundation.dart';
 
 class ProductsManager with ChangeNotifier {
-  List<Product> _items = [
-     Product(
-      id: 'p1',
-      name: 'Red Shirt',
-      information: 'A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red!A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red! A red shirt - it is pretty red!',
-      price: 29.99,
-      images:
-          ['https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg'],
-    ),
-    Product(
-      id: 'p2',
-      name: 'Trousers',
-      information: 'A nice pair of trousers.',
-      price: 59.99,
-      images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
-          ]
-    ),
-  ];
+  List<Product> _items = [];
 
   final ProductsService _productsService;
 
@@ -37,10 +15,18 @@ class ProductsManager with ChangeNotifier {
     _productsService.authToken = authToken;
   }
 
-  Future<void> fetchProducts() async {
-    _items = await _productsService.fetchProducts();
+  Future<void> fetchProducts(String? type) async {
+    print(type);
+    _items = await _productsService.fetchProducts(filterByType: type);
     notifyListeners();
   }
+  
+  // Future<void> fetchProductsFilter(type) async {
+  //   _items = await _productsService.fetchProducts(
+  //     filterByType: type
+  //   );
+  //   notifyListeners();
+  // }
 
   int get itemCount {
     return _items.length;

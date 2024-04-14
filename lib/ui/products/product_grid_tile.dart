@@ -47,16 +47,12 @@ class ProductGridTile extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                // const SizedBox(height: 8),
-                // Text(
-                //   product.information,
-                //   style: const TextStyle(
-                //     fontSize: 16,
-                //   ),
-                // ),
                 const SizedBox(height: 8),
                 Text(
-                  '\$${product.price.toStringAsFixed(2)}',
+                  '${product.price.toString().replaceAllMapped(
+                    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                    (Match m) => '${m[1]}.',
+                  )}đ',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

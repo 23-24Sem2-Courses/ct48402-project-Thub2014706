@@ -71,7 +71,10 @@ class ItemInfoCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            'đ${cartItem.product.price}', 
+            '${cartItem.product.price.toString().replaceAllMapped(
+              RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+              (Match m) => '${m[1]}.',
+            )}đ', 
             style: const TextStyle(
               color: Colors.red,
               fontSize: 18,

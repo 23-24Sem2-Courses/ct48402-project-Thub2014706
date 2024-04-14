@@ -38,7 +38,10 @@ class CartScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'đ${cart.totalAmount}',
+                  '${cart.totalAmount.toString().replaceAllMapped(
+                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                  (Match m) => '${m[1]}.',
+                )}đ',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,

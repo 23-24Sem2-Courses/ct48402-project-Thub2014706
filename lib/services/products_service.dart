@@ -7,13 +7,13 @@ import 'package:ct484_project/services/firebase_service.dart';
 class ProductsService extends FirebaseService {
   ProductsService([AuthToken? authToken]) : super(authToken);
 
-  Future<List<Product>> fetchProducts() async {
+  Future<List<Product>> fetchProducts({String? filterByType}) async {
     final List<Product> products = [];
 
     try {
-      // final filters = filteredByUser ? 'orderBy="'
+      final filters = filterByType != null ? 'orderBy="type"&equalTo="$filterByType"' : '';
       final productsMap = await httpFetch(
-        '$databaseUrl/products.json?auth=$token'
+        '$databaseUrl/products.json?auth=$token&$filters'
       ) as Map<String, dynamic>?;
 
       productsMap?.forEach((productId, product) {
@@ -26,7 +26,7 @@ class ProductsService extends FirebaseService {
           })
         );
       });
-      // print(AuthToken().);
+      print(products);
       return products;
     } catch (e) {
       print(e);
@@ -43,6 +43,7 @@ class ProductsService extends FirebaseService {
           product.toJson()
         )
       );
+      print(product.type);
       return product.copyWith(
         id: newProduct!['name'],
       );

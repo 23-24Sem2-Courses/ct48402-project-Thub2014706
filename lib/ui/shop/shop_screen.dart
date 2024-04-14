@@ -17,11 +17,22 @@ class ShopScreen extends StatefulWidget {
 
 class _ShopScreenState extends State<ShopScreen> {
   late Future<void> _fetchProducts;
+  final _selectType = ValueNotifier<String?>(null);
+  // String? selectType;
+
+  // ValueNotifier<String?> typeNotifier = ValueNotifier<String?>(null);
+
 
   @override
   void initState() {
     super.initState();
-    _fetchProducts = context.read<ProductsManager>().fetchProducts();
+      _fetchProducts = context.read<ProductsManager>().fetchProducts(_selectType.value);
+    // if (selectType != null) {
+    //   print(selectType);
+    // } else {
+    //   _fetchProducts = context.read<ProductsManager>().fetchProducts();
+    //   print(selectType);
+    // }
   }
 
   @override
@@ -101,23 +112,92 @@ class _ShopScreenState extends State<ShopScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return SingleChildScrollView(
+              child: ValueListenableBuilder(
+                valueListenable: _selectType,
+                builder: (context, type, child) {
+                  return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildPromotionBanner(),
+                  _typeProduct(),
+                  ProductsGrid(),
+                ],
+              );
+                },
+              )
+              
+            );
+            
+          }else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildPromotionBanner(),
-                  ProductsGrid(),
+                  _typeProduct(),
+                  Text('Không có sản phẩm phù hợp'),
                 ],
               ),
             );
+            // return const Center(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       // _buildPromotionBanner(),
+            //       // _typeProduct(),
+            //       Text('Không có sản phẩm phù hợp'),
+            //     ],
+            //   ),
+            // );
           }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          // return const Center(
+          //   child: CircularProgressIndicator(),
+          // );
         }
       )      
     );
   }
-}
+  Widget _typeProduct() {
+    List<String> items =  ['Moraine', 'Melissani', 'Sicily', 'Kashmir', 'Weimar'];
+    return Container(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          const Text('Tất cả danh mục', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+          const SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: items.map((item) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectType.value = item;
+                      // print(selectType);
+                    });
+                  },
+                  child: Column(
+                  children: [
+                    Image(
+                      image: AssetImage('assets/images/$item.png'),
+                      height: 50,
+                    ),
+                    Text(item),
+                  ],
+                ),
+                )            
+              );
+            }).toList(),
+          )
+        ],
+      ),
+    );
+  }
 
   Widget _buildPromotionBanner() {
     return Container(
@@ -166,4 +246,7 @@ class _ShopScreenState extends State<ShopScreen> {
       ),
     );
   }
+
+
+}
 

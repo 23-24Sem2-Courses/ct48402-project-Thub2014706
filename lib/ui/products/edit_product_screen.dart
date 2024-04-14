@@ -20,6 +20,7 @@ class EditProductScreen extends StatefulWidget {
         name: '', 
         images: [], 
         information: '', 
+        type: '',
         price: 0
       );
     } else {
@@ -32,6 +33,7 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreen extends State<EditProductScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<TextEditingController> _imageControllers = [];
   // final _imageUrlController = TextEditingController();
   List<FocusNode> _imageFocusNodes = [];
@@ -150,6 +152,8 @@ class _EditProductScreen extends State<EditProductScreen> {
                 const SizedBox(height: 10,),
                 _buildInformationField(),
                 const SizedBox(height: 10,),
+                _buildTypeField(),
+                const SizedBox(height: 10,),
                 _buildProductPreview(),
               ],
             ),
@@ -192,16 +196,16 @@ class _EditProductScreen extends State<EditProductScreen> {
         if (value!.isEmpty) {
           return 'Không được trống.';
         }
-        if (double.tryParse(value) == null) {
+        if (int.tryParse(value) == null) {
           return 'Vui lòng nhập giá trị số.';
         }
-        if (double.parse(value) <= 0) {
+        if (int.parse(value) <= 0) {
           return 'Vui lòng nhập số tiền lớn hơn 0,';
         }
         return null;
       },
       onSaved: (value) {
-        _editedProduct = _editedProduct.copyWith(price: double.parse(value!));
+        _editedProduct = _editedProduct.copyWith(price: int.parse(value!));
       },
     );
   }
@@ -230,16 +234,50 @@ class _EditProductScreen extends State<EditProductScreen> {
     );
   }
 
+  String? _selectedItem;
+
+  Widget _buildTypeField() {
+    final List<String> items = ['Moraine', 'Melissani', 'Sicily', 'Kashmir', 'Weimar'];
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          DropdownButtonFormField<String>(
+            value: _selectedItem,
+            hint: const Text('Chọn phân loại'),
+            onChanged: (value) {
+              setState(() {
+                _selectedItem = value;
+                _editedProduct = _editedProduct.copyWith(type: value);
+              });
+            },
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+            ),
+            items: items.map((String item) {
+              return DropdownMenuItem(
+                value: item,
+                child: Text(item)
+              );
+            }).toList(),
+            // onSaved: (value) {
+            //   if (value != null) {
+            //     _editedProduct = _editedProduct.copyWith(type: value);
+            //   }
+            // },
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProductPreview() {
     return Column(
       children: [
         Container(
-          // width: 100,
           height: 100,
           margin: const EdgeInsets.only(top: 8, right: 10),
-          // decoration: BoxDecoration(
-          //   border: Border.all(width: 1, color: Colors.grey),
-          // ),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: _imageControllers.length,

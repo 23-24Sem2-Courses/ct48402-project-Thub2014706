@@ -39,7 +39,7 @@ class ProductListTile extends StatelessWidget {
                   ..showSnackBar(
                     const SnackBar(
                       content: Text(
-                        'delete',
+                        'Xóa thành công!',
                         textAlign: TextAlign.center,
                       ),
                     ),
