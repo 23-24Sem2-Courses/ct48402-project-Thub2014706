@@ -5,10 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ProductsGrid extends StatelessWidget {
-
-  // final String? type;
-
-  // const ProductsGrid(this.type, {super.key});
   
   @override
   Widget build(BuildContext context) {

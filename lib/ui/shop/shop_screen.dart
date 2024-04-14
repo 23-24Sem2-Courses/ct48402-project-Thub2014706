@@ -1,6 +1,8 @@
+import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
+import 'package:ct484_project/ui/products/product_grid_tile.dart';
 import 'package:ct484_project/ui/products/products_grid.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:ct484_project/ui/products/top_right_badge.dart';
@@ -18,21 +20,15 @@ class ShopScreen extends StatefulWidget {
 class _ShopScreenState extends State<ShopScreen> {
   late Future<void> _fetchProducts;
   final _selectType = ValueNotifier<String?>(null);
-  // String? selectType;
-
-  // ValueNotifier<String?> typeNotifier = ValueNotifier<String?>(null);
-
 
   @override
   void initState() {
     super.initState();
+    _fetchProducts = context.read<ProductsManager>().fetchProducts(_selectType.value);
+    _selectType.addListener(() {
       _fetchProducts = context.read<ProductsManager>().fetchProducts(_selectType.value);
-    // if (selectType != null) {
-    //   print(selectType);
-    // } else {
-    //   _fetchProducts = context.read<ProductsManager>().fetchProducts();
-    //   print(selectType);
-    // }
+      setState(() {});
+    });
   }
 
   @override
@@ -107,58 +103,38 @@ class _ShopScreenState extends State<ShopScreen> {
         ],
       ),
 
-      body: FutureBuilder(
-        future: _fetchProducts,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return SingleChildScrollView(
-              child: ValueListenableBuilder(
-                valueListenable: _selectType,
-                builder: (context, type, child) {
-                  return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPromotionBanner(),
-                  _typeProduct(),
-                  ProductsGrid(),
-                ],
-              );
-                },
-              )
-              
-            );
-            
-          }else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildPromotionBanner(),
-                  _typeProduct(),
-                  Text('Không có sản phẩm phù hợp'),
-                ],
-              ),
-            );
-            // return const Center(
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       // _buildPromotionBanner(),
-            //       // _typeProduct(),
-            //       Text('Không có sản phẩm phù hợp'),
-            //     ],
-            //   ),
-            // );
-          }
-          // return const Center(
-          //   child: CircularProgressIndicator(),
-          // );
-        }
-      )      
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildPromotionBanner(),
+            _typeProduct(),
+            FutureBuilder(
+              future: _fetchProducts,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return SingleChildScrollView(
+                    child: ValueListenableBuilder(
+                      valueListenable: _selectType,
+                      builder: (context, type, child) {
+                        return Container(
+                          child: ProductsGrid()
+                        );
+                      },
+                    )                    
+                  );                  
+                }else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }
+            )  
+          ],
+        ),
+      )
+      
+          
     );
   }
   Widget _typeProduct() {
@@ -173,23 +149,35 @@ class _ShopScreenState extends State<ShopScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: items.map((item) {
               return Padding(
-                padding: const EdgeInsets.only(right: 15),
+                padding: const EdgeInsets.only(right: 5),
                 child: GestureDetector(
                   onTap: () {
                     setState(() {
-                      _selectType.value = item;
+                      if (_selectType.value != item) {
+                        _selectType.value = item;
+                      } else {
+                        _selectType.value = null;
+                      }
                       // print(selectType);
                     });
                   },
-                  child: Column(
-                  children: [
-                    Image(
-                      image: AssetImage('assets/images/$item.png'),
-                      height: 50,
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: _selectType.value == item ? BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(30),
+                    ) : null,
+                    child: Column(
+                      children: [
+                        Image(
+                          image: AssetImage('assets/images/$item.png'),
+                          height: 50,
+                        ),
+                        Text(item),
+                      ],
                     ),
-                    Text(item),
-                  ],
-                ),
+                  )
+                  
                 )            
               );
             }).toList(),
