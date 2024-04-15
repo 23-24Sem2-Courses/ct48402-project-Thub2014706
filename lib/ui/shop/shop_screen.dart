@@ -86,18 +86,21 @@ class _ShopScreenState extends State<ShopScreen> {
                   // context.read<AuthManager>().logout();
                 },
               ),
-              TopRightBadge(
-                data: CartManager().itemCount,
-                child: IconButton(
-                  icon: const Icon(Icons.shopping_cart),
-                  color: Colors.white,
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(
-                      CartScreen.routeName,
-                    );
-                  },
-                ),
-              )            
+              Consumer<CartManager>(
+                builder: (context, cartManager, child) {
+                  return TopRightBadge(
+                    data: cartManager.itemCount,
+                    child: IconButton(
+                      icon: const Icon(Icons.shopping_cart, color: Colors.white,),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          CartScreen.routeName,
+                        );
+                      },
+                    ),
+                  );
+                },
+              )              
             ],
           )
         ],

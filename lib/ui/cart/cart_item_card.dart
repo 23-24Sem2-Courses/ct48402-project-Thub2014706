@@ -1,6 +1,8 @@
 import 'package:ct484_project/models/cart_item.dart';
+import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/shared/dialog_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CartItemCard extends StatelessWidget {
   final CartItem cartItem;
@@ -32,7 +34,7 @@ class CartItemCard extends StatelessWidget {
         return showConfirmDialog(context, 'Bạn muốn xóa sản phẩm này?');
       },
       onDismissed: (direction) {
-        print('xoa a nhe');
+        context.read<CartManager>().deleteCart(cartItem.id!);
       },
       child: ItemInfoCard(cartItem),
     );
@@ -58,20 +60,20 @@ class ItemInfoCard extends StatelessWidget {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(5),
             child: Image.network(
-              cartItem.product.images[0],
+              cartItem.image,
               fit: BoxFit.cover,
               width: 85,
               height: 85,
             ),
           ),
           title: Text(
-            cartItem.product.name,
+            cartItem.name,
             style: const TextStyle(
               fontSize: 18,
             ),
           ),
           subtitle: Text(
-            '${cartItem.product.price.toString().replaceAllMapped(
+            '${cartItem.price.toString().replaceAllMapped(
               RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
               (Match m) => '${m[1]}.',
             )}đ', 

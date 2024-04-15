@@ -16,17 +16,18 @@ class ProductsManager with ChangeNotifier {
   }
 
   Future<void> fetchProducts(String? type) async {
-    print(type);
+    // print(type);
     _items = await _productsService.fetchProducts(filterByType: type);
     notifyListeners();
   }
-  
-  // Future<void> fetchProductsFilter(type) async {
-  //   _items = await _productsService.fetchProducts(
-  //     filterByType: type
-  //   );
-  //   notifyListeners();
-  // }
+
+  Future<bool?> isFavorite(String productId) async {
+    bool? isFav = await _productsService.isFavorite(productId);
+    notifyListeners();
+    print(isFav);
+    return isFav;
+  }
+
 
   int get itemCount {
     return _items.length;
@@ -72,5 +73,19 @@ class ProductsManager with ChangeNotifier {
       _items.insert(index, existingProduct);
       notifyListeners();
     }
+  }
+
+  Future<void> addFavorite(String id) async {
+    await _productsService.addFavorite(id);
+    // if (newFavorite != false) {
+    //   _items.add(newProduct);
+      notifyListeners();
+    // }
+  }
+
+  Future<void> deleteFavorite(String id) async {
+    await _productsService.deleteFavorite(id);
+    notifyListeners();
+    
   }
 }

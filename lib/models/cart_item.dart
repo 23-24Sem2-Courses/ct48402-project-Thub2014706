@@ -1,29 +1,50 @@
-import 'package:ct484_project/models/product.dart';
-
 class CartItem {
-  final String id;
+  final String? id;
   final int quantity;
-  final int totalPrice;
-  final Product product;
+  final String name;
+  final String image;
+  final int price;
 
   CartItem({
-    required this.id,
+    this.id,
     required this.quantity,
-    required this.totalPrice,
-    required this.product,
+    required this.name,
+    required this.image,
+    required this.price,
   });
 
   CartItem copyWith({
     String? id,
     int? quantity,
-    int? totalPrice,
-    Product? product,
+    String? name,
+    String? image,
+    int? price,
   }) {
     return CartItem(
       id: id ?? this.id,
       quantity: quantity ?? this.quantity, 
-      totalPrice: totalPrice ?? this.totalPrice,
-      product: product ?? this.product,
+      name: name ?? this.name,
+      image: image ?? this.image,
+      price: price ?? this.price,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'quantity': quantity,
+      'name': name,
+      'image': image,
+      'price': price,
+    };
+  }
+
+  static CartItem fromJson(Map<String, dynamic> json) {
+    return CartItem(
+      id: json['id'],
+      quantity: json['quantity'],
+      name: json['name'], 
+      price: json['price'],
+      image: json['image'], 
     );
   }
 }

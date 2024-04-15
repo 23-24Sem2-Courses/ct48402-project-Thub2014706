@@ -34,6 +34,24 @@ class ProductsService extends FirebaseService {
     }
   }
 
+  Future<bool?> isFavorite(String productId) async {
+    try {
+      final response = await httpFetch(
+        '$databaseUrl/favorite/$userId/$productId.json?auth=$token',
+        method: HttpMethod.get,
+      );
+      print(response);
+      if (response != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return null; 
+    }
+  }
+
   Future<Product?> addProduct(Product product) async {
     try {
       final newProduct = await httpFetch(
@@ -81,4 +99,34 @@ class ProductsService extends FirebaseService {
       return false;
     }
   }
+
+  Future<bool?> addFavorite(String productId) async {
+    try {
+      await httpFetch(
+        '$databaseUrl/favorite/$userId/$productId.json?auth=$token',
+        method: HttpMethod.post,
+        body: jsonEncode(true)
+      );
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool?> deleteFavorite(String productId) async {
+    try {
+      await httpFetch(
+        '$databaseUrl/favorite/$userId/$productId.json?auth=$token',
+        method: HttpMethod.delete,
+      );
+
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
 }
