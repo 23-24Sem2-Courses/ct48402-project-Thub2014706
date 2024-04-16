@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ct484_project/models/auth_token.dart';
 import 'package:ct484_project/models/cart_item.dart';
+import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/services/firebase_service.dart';
 
 class CartService extends FirebaseService {
@@ -31,29 +32,52 @@ class CartService extends FirebaseService {
     }
   }
 
-  Future<CartItem?> addCart(CartItem cartItem) async {
+  Future<CartItem?> addCart(Product product, int quantity) async {
     try {
       final newCart = await httpFetch(
-        '$databaseUrl/cart/$userId.json?auth=$token',
-        method: HttpMethod.post,
-        body: jsonEncode(
-          cartItem.toJson()
-        )
-      );
+        '$databaseUrl/cart/$userId/${product.id}.json?auth=$token',
+        method: HttpMethod.put,
+        body: jsonEncode({
+          'name': product.name,
+          'image': product.images[0],
+          'price': product.price,
+          'quantity': quantity,
+        })
+      ) as Map<String, dynamic>?;
 
-      return cartItem.copyWith(
-        id: newCart!['name'],
-      );
+      if (newCart != null) {
+          return CartItem(
+            name: product.name,
+            image: product.images[0],
+            price: product.price,
+            quantity: quantity,
+          );
+        } else {
+          return null;
+        }
     } catch (e) {
       print(e);
       return null;
     }
   }
 
-    Future<bool> deleteCart(String id) async {
+  Future<bool> deleteCart(String id) async {
     try {
       await httpFetch(
         '$databaseUrl/cart/$userId/${id}.json?auth=$token',
+        method: HttpMethod.delete,
+      );
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteAll() async {
+    try {
+      await httpFetch(
+        '$databaseUrl/cart/$userId.json?auth=$token',
         method: HttpMethod.delete,
       );
       return true;

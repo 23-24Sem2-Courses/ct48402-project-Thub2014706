@@ -1,4 +1,3 @@
-import 'package:ct484_project/models/cart_item.dart';
 import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/auth/auth_screen.dart';
@@ -8,6 +7,7 @@ import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:ct484_project/ui/products/top_right_badge.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   static const routeName = '/product-detail';
@@ -42,6 +42,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final f = NumberFormat("#,###", "vi_VN");
     final TextEditingController quantityController = TextEditingController(text: '$_quantity');
     Product product = widget.product;
     return Scaffold(
@@ -119,15 +120,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               child: Text(
-                '${product.price.toString().replaceAllMapped(
-                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                  (Match m) => '${m[1]}.',
-                )}đ',
-                // '${product.price.toString().substring(0, 1)}' 
-                // + '.'
-                // + '${product.price.toString().substring(1, 4)}' 
-                // + '.' 
-                // + '${product.price.toString().substring(4, 7)}đ',
+                '${f.format(product.price).toString()}đ',
                 style: const TextStyle(
                   color: Colors.red,
                   fontSize: 25,
@@ -369,33 +362,53 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         OutlinedButton(
                           onPressed: () {
+                            final authManager = context.read<AuthManager>();
                             final cartManager = context.read<CartManager>();
-                            cartManager.addCart(
-                              CartItem(
-                                quantity: _quantity,
-                                name: product.name,
-                                image: product.images[0],
-                                price: product.price
-                              )
-                            );
-                            Future.delayed(const Duration(seconds: 1), () {
-                              Navigator.pop(context);
-                            });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                  'Thành công!',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
+                            if (authManager.isAuth) {
+                              cartManager.addCart(product, _quantity);
+                              Future.delayed(const Duration(seconds: 1), () {
+                                Navigator.pop(context);
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Thành công!',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
                                   ),
+                                  backgroundColor: Color.fromARGB(255, 255, 255, 255), // Màu nền của SnackBar
+                                  duration: Duration(seconds: 2), // Thời gian hiển thị
+                                  behavior: SnackBarBehavior.floating, // Hiển thị ở giữa màn hình
                                 ),
-                                backgroundColor: Color.fromARGB(255, 255, 255, 255), // Màu nền của SnackBar
-                                duration: Duration(seconds: 2), // Thời gian hiển thị
-                                behavior: SnackBarBehavior.floating, // Hiển thị ở giữa màn hình
-                              ),
-                            );
+                              );
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  content: const Text('Bạn cần đăng nhập để sử dụng chức năng này.'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); 
+                                      },
+                                      child: const Text('Đóng'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed(
+                                          AuthScreen.routeName,
+                                        );
+                                      },
+                                      child: const Text('Đăng nhập'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            
                           }, 
                           child: const Text(
                             'Thêm vào giỏ hàng',

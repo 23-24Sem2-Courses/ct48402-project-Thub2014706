@@ -28,6 +28,10 @@ class ProductsManager with ChangeNotifier {
     return isFav;
   }
 
+  Future<void> allFavorite() async {
+    _items = await _productsService.allFavorite();
+    notifyListeners();
+  }
 
   int get itemCount {
     return _items.length;

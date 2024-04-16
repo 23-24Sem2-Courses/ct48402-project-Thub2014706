@@ -3,6 +3,7 @@ import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/shared/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class CartItemCard extends StatelessWidget {
   final CartItem cartItem;
@@ -52,6 +53,7 @@ class ItemInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final f = NumberFormat("#,###", "vi_VN");
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: Padding(
@@ -73,10 +75,7 @@ class ItemInfoCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            '${cartItem.price.toString().replaceAllMapped(
-              RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-              (Match m) => '${m[1]}.',
-            )}đ', 
+            '${f.format(cartItem.price).toString()}đ', 
             style: const TextStyle(
               color: Colors.red,
               fontSize: 18,

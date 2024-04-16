@@ -2,10 +2,12 @@ import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
+import 'package:ct484_project/ui/orders/order_manager.dart';
+import 'package:ct484_project/ui/orders/orders_screen.dart';
 import 'package:ct484_project/ui/products/edit_product_screen.dart';
+import 'package:ct484_project/ui/products/favorite_list_screen.dart';
 import 'package:ct484_project/ui/products/product_detail_screen.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
-import 'package:ct484_project/ui/products/products_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -40,6 +41,13 @@ class MyApp extends StatelessWidget {
             cartManager!.authToken = authManager.authToken;
             return cartManager;
           }
+        ),
+        ChangeNotifierProxyProvider<AuthManager, OrdersManager>(
+          create: (ctx) => OrdersManager(), 
+          update: (ctx, authManager, ordersManager) {
+            ordersManager!.authToken = authManager.authToken;
+            return ordersManager;
+          }
         )
       ],
       child: MaterialApp(
@@ -58,6 +66,8 @@ class MyApp extends StatelessWidget {
         routes: {
           CartScreen.routeName: (context) => const SafeArea(child: CartScreen()),
           AuthScreen.routeName: (context) => const SafeArea(child: AuthScreen()),
+          OrdersScreen.routeName: (context) => const SafeArea(child: OrdersScreen()),
+          FavoriteListScreen.routeName: (context) => const SafeArea(child: FavoriteListScreen()),
         },
 
         onGenerateRoute: (settings) {

@@ -1,8 +1,5 @@
-import 'package:ct484_project/models/product.dart';
-import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/cart/cart_manager.dart';
 import 'package:ct484_project/ui/cart/cart_screen.dart';
-import 'package:ct484_project/ui/products/product_grid_tile.dart';
 import 'package:ct484_project/ui/products/products_grid.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:ct484_project/ui/products/top_right_badge.dart';

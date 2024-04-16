@@ -1,5 +1,6 @@
 import 'package:ct484_project/models/auth_token.dart';
 import 'package:ct484_project/models/cart_item.dart';
+import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/services/cart_service.dart';
 import 'package:flutter/foundation.dart';
 
@@ -36,11 +37,25 @@ class CartManager with ChangeNotifier {
     return total;
   }
 
-  Future<void> addCart(CartItem cartItem) async {
-    final newCart = await _cartService.addCart(cartItem);
-    if (newCart != null) {
-      _items.add(newCart);
-      notifyListeners();
+  Future<void> addCart(Product product, int quantity) async {
+    try {
+      final index = _items.indexWhere((element) => element.id == product.id);
+      if (index >= 0) {
+        final newQuantity = _items[index].quantity + quantity;
+        final newCart = await _cartService.addCart(product, newQuantity);
+        if (newCart != null) {
+          _items[index] = newCart;
+          notifyListeners();
+        }
+      } else {
+        final newCart = await _cartService.addCart(product, quantity);
+        if (newCart != null) {
+          _items.add(newCart);
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -55,4 +70,12 @@ class CartManager with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> deleteAll() async {
+    if (await _cartService.deleteAll()) {
+      _items = [];
+      notifyListeners();
+    }
+  }
+
 }

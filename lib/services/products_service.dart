@@ -52,6 +52,29 @@ class ProductsService extends FirebaseService {
     }
   }
 
+  Future<List<Product>> allFavorite() async {
+    final List<Product> products = [];
+
+    try {
+      final productsMap = await httpFetch(
+        '$databaseUrl/favorite/$userId.json?auth=$token'
+      ) as Map<String, dynamic>?;
+
+      productsMap?.forEach((productId, product) {
+        products.add(
+          Product.fromJson({
+            'id': product,
+          })
+        );
+      });
+      print(products);
+      return products;
+    } catch (e) {
+      print(e);
+      return products;
+    }
+  }
+
   Future<Product?> addProduct(Product product) async {
     try {
       final newProduct = await httpFetch(

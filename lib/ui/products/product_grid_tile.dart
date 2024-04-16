@@ -1,6 +1,7 @@
 import 'package:ct484_project/models/product.dart';
 import 'package:ct484_project/ui/products/product_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProductGridTile extends StatelessWidget {
   const ProductGridTile (
@@ -13,6 +14,7 @@ class ProductGridTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final f = NumberFormat("#,###", "vi_VN");
     return Container(
       width: 170,
       child: Card(
@@ -49,10 +51,7 @@ class ProductGridTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '${product.price.toString().replaceAllMapped(
-                    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                    (Match m) => '${m[1]}.',
-                  )}đ',
+                  '${f.format(product.price).toString()}đ',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
