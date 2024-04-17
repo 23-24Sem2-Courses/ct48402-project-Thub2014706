@@ -25,17 +25,7 @@ class FavoriteTile extends StatelessWidget {
           children: <Widget>[
             DeleteProductButton(
               onPressed: () {
-                // context.read<ProductsManager>().deleteProduct(product.id!);
-                // ScaffoldMessenger.of(context)
-                //   ..hideCurrentSnackBar()
-                //   ..showSnackBar(
-                //     const SnackBar(
-                //       content: Text(
-                //         'Xóa thành công!',
-                //         textAlign: TextAlign.center,
-                //       ),
-                //     ),
-                //   );
+                context.read<ProductsManager>().deleteFavorite(product.id!);
               },
             )
           ],

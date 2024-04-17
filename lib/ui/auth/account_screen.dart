@@ -1,5 +1,6 @@
 import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/auth/auth_screen.dart';
+import 'package:ct484_project/ui/orders/orders_screen.dart';
 import 'package:ct484_project/ui/products/favorite_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +67,15 @@ class Auth extends StatelessWidget {
           },
           icon: const Icon(Icons.favorite),
           text: const Text('Danh sách yêu thích'),
+        ),
+        CardItem(
+          onPressed: () {
+            Navigator.of(context).pushNamed(
+              OrdersScreen.routeName,
+            );
+          },
+          icon: const Icon(Icons.document_scanner_sharp),
+          text: const Text('Đơn hàng của bạn'),
         ),
         CardItem(
           onPressed: () {

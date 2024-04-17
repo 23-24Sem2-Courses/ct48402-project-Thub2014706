@@ -22,7 +22,7 @@ class FavoriteListScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        future: context.read<ProductsManager>().fetchProducts(null),
+        future: context.read<ProductsManager>().allFavorite(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
