@@ -22,6 +22,7 @@ class CartManager with ChangeNotifier {
   }
 
   int get itemCount {
+    fetchCart();
     return _items.length;
   }
 
