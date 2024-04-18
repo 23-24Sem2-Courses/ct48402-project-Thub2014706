@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/orders/orders_screen.dart';
