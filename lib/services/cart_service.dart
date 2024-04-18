@@ -26,8 +26,8 @@ class CartService extends FirebaseService {
       });
       return cart;
     } catch (e) {
-      print(cart);
-      print(e);
+      // print(cart);
+      // print(e);
       return cart;
     }
   }

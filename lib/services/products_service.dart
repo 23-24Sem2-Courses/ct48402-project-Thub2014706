@@ -26,7 +26,7 @@ class ProductsService extends FirebaseService {
           })
         );
       });
-      print(products);
+      // print(products);
       return products;
     } catch (e) {
       print(e);
@@ -39,7 +39,7 @@ class ProductsService extends FirebaseService {
       final response = await httpFetch(
         '$databaseUrl/favorite/$userId/$productId.json?auth=$token',
       );
-      print(response);
+      (response);
       if (response != null) {
         return true;
       } else {
@@ -90,7 +90,6 @@ class ProductsService extends FirebaseService {
           product.toJson()
         )
       );
-      print(product.type);
       return product.copyWith(
         id: newProduct!['name'],
       );

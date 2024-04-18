@@ -63,14 +63,9 @@ class CartManager with ChangeNotifier {
 
   Future<void> deleteCart(String id) async {
     final index = _items.indexWhere((element) => element.id == id);
-    CartItem? existingCart = _items[index];
     _items.removeAt(index);
     notifyListeners();
-
-    if (!await _cartService.deleteCart(id)) {
-      _items.insert(index, existingCart);
-      notifyListeners();
-    }
+    await _cartService.deleteCart(id);
   }
 
   Future<void> deleteAll() async {

@@ -171,7 +171,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           ? ValueListenableBuilder<bool?>(
                             valueListenable: _favorite,
                             builder: (context, isFavorite, child) {
-                              print(_favorite.value);
+                              // print(_favorite.value);
                               return IconButton(
                                 icon: _favorite.value == false 
                                   ? const Icon(Icons.favorite_border) 

@@ -24,7 +24,7 @@ class ProductsManager with ChangeNotifier {
   Future<bool?> isFavorite(String productId) async {
     bool? isFav = await _productsService.isFavorite(productId);
     notifyListeners();
-    print(isFav);
+    // print(isFav);
     return isFav;
   }
 
