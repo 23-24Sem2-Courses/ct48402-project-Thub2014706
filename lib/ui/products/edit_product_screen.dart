@@ -33,11 +33,8 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreen extends State<EditProductScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<TextEditingController> _imageControllers = [];
-  // final _imageUrlController = TextEditingController();
   List<FocusNode> _imageFocusNodes = [];
-  // final _imageUrlFocusNode = FocusNode(); //điều khiển tập trung
   final _editForm = GlobalKey<FormState>(); //  truy cập đến một widget từ bất kỳ đâu
   late Product _editedProduct;
   var _isLoading = false;
@@ -52,7 +49,6 @@ class _EditProductScreen extends State<EditProductScreen> {
   void initState() {
     _imageControllers = List.generate(widget.product.images.length, (index) => TextEditingController());
     _imageFocusNodes = List.generate(widget.product.images.length, (index) => FocusNode());
-    super.initState();
     for (int i = 0; i < widget.product.images.length; i++) {
       _imageFocusNodes[i].addListener(() {
         if (!_imageFocusNodes[i].hasFocus) {
@@ -132,7 +128,7 @@ class _EditProductScreen extends State<EditProductScreen> {
         actions: <Widget>[
           IconButton(
             onPressed: _saveForm, 
-            icon: const Icon(Icons.save)
+            icon: const Icon(Icons.save, color: Colors.white,)
           )
         ],
       ),
@@ -234,41 +230,25 @@ class _EditProductScreen extends State<EditProductScreen> {
     );
   }
 
-  String? _selectedItem;
-
-  Widget _buildTypeField() {
+  DropdownButtonFormField _buildTypeField() {
     final List<String> items = ['Moraine', 'Melissani', 'Sicily', 'Kashmir', 'Weimar'];
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          DropdownButtonFormField<String>(
-            value: _selectedItem,
-            hint: const Text('Chọn phân loại'),
-            onChanged: (value) {
-              setState(() {
-                _selectedItem = value;
-                _editedProduct = _editedProduct.copyWith(type: value);
-              });
-            },
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-            ),
-            items: items.map((String item) {
-              return DropdownMenuItem(
-                value: item,
-                child: Text(item)
-              );
-            }).toList(),
-            // onSaved: (value) {
-            //   if (value != null) {
-            //     _editedProduct = _editedProduct.copyWith(type: value);
-            //   }
-            // },
-          ),
-        ],
+    return DropdownButtonFormField<String>(
+      value: _editedProduct.type.isEmpty ? null : _editedProduct.type,
+      hint: const Text('Chọn phân loại'),
+      onChanged: (value) {
+        setState(() {
+          _editedProduct = _editedProduct.copyWith(type: value);
+        });
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
       ),
+      items: items.map((String item) {
+        return DropdownMenuItem(
+          value: item,
+          child: Text(item)
+        );
+      }).toList(),
     );
   }
 

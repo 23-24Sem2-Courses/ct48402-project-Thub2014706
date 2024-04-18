@@ -1,5 +1,5 @@
 import 'package:ct484_project/models/product.dart';
-import 'package:ct484_project/ui/products/edit_product_screen.dart';
+import 'package:ct484_project/ui/products/product_detail_screen.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,24 +14,33 @@ class FavoriteTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(product.name),
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(product.images[0]),
-      ),
-      trailing: SizedBox(
-        width: 100,
-        child: Row(
-          children: <Widget>[
-            DeleteProductButton(
-              onPressed: () {
-                context.read<ProductsManager>().deleteFavorite(product.id!);
-              },
-            )
-          ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(
+          ProductDetailScreen.routeName,
+          arguments: product.id,
+        );
+      },
+      child: ListTile(
+        title: Text(product.name),
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(product.images[0]),
         ),
+        trailing: Consumer<ProductsManager>(
+          builder: (context, productManager, child) {
+            return SizedBox(
+              width: 100,
+              child: DeleteProductButton(
+                onPressed: () {
+                  context.read<ProductsManager>().deleteFavorite(product.id!);
+                },
+              )
+            );
+          },
+        )  
       ),
     );
+    
   }
 }
 

@@ -39,6 +39,7 @@ class CartManager with ChangeNotifier {
 
   Future<void> addCart(Product product, int quantity) async {
     try {
+      fetchCart();
       final index = _items.indexWhere((element) => element.id == product.id);
       if (index >= 0) {
         final newQuantity = _items[index].quantity + quantity;
@@ -51,9 +52,9 @@ class CartManager with ChangeNotifier {
         final newCart = await _cartService.addCart(product, quantity);
         if (newCart != null) {
           _items.add(newCart);
-          notifyListeners();
         }
       }
+      notifyListeners();
     } catch (e) {
       print(e);
     }
@@ -72,10 +73,10 @@ class CartManager with ChangeNotifier {
   }
 
   Future<void> deleteAll() async {
-    if (await _cartService.deleteAll()) {
+    await _cartService.deleteAll();
       _items = [];
       notifyListeners();
-    }
+    
   }
 
 }

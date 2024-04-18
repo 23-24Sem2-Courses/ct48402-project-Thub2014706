@@ -97,7 +97,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: i == index ? Color.fromARGB(255, 228, 91, 28) : Colors.transparent,
+                              color: i == index ? const Color.fromARGB(255, 228, 91, 28) : Colors.transparent,
                               width: 1,
                             ),
                             borderRadius: BorderRadius.circular(5)
@@ -257,7 +257,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
             ),
 
-
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
@@ -271,166 +270,167 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-        color: const Color.fromARGB(255, 247, 167, 46),
-        height: 60,
-        // child: Tooltip(
-          child: TextButton.icon(
-            onPressed: () {
-              setState(() {
-                _quantity = 1;
-                quantityController.text = '$_quantity';
-              });
-              showModalBottomSheet(
-                context: context,
-                shape: BeveledRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                builder: (BuildContext context) {
-                  return Container(
-                    height: 150,
-                    child: Column(
+      bottomNavigationBar: GestureDetector(
+        onTap: () {
+          setState(() {
+            _quantity = 1;
+            quantityController.text = '$_quantity';
+          });
+          showModalBottomSheet(
+            context: context,
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            builder: (BuildContext context) {
+              return Container(
+                height: 150,
+                child: Column(
+                  children: [
+                    Row(   
+                      mainAxisAlignment: MainAxisAlignment.end,                    
                       children: [
-                        Row(   
-                          mainAxisAlignment: MainAxisAlignment.end,                    
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              }, 
-                              icon: const Icon(Icons.close, color: Color.fromARGB(255, 119, 119, 119)),
-                            ),
-                          ]
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }, 
+                          icon: const Icon(Icons.close, color: Color.fromARGB(255, 119, 119, 119)),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          width: double.infinity,
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Số lượng:',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                ),
+                      ]
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Số lượng:',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                          const SizedBox(width: 130),
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  setState(() {
+                                    if (_quantity > 1) _quantity--;
+                                    quantityController.text = '$_quantity';
+                                  });
+                                },
                               ),
-                              const SizedBox(width: 130),
-                              Row(
-                                children: <Widget>[
-                                  IconButton(
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: () {
-                                      setState(() {
-                                        if (_quantity > 1) _quantity--;
-                                        quantityController.text = '$_quantity';
-                                      });
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                    height: 30,
-                                    child: Center(
-                                      child: TextField(
-                                        controller: quantityController,
-                                        keyboardType: TextInputType.number,
-                                        textAlign: TextAlign.center,
-                                        enabled: false,
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.black
-                                        ),
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 3),
-                                        ),
-                                      ),
+                              SizedBox(
+                                width: 50,
+                                height: 30,
+                                child: Center(
+                                  child: TextField(
+                                    controller: quantityController,
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
+                                    enabled: false,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black
+                                    ),
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      contentPadding: EdgeInsets.symmetric(horizontal: 3),
                                     ),
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.add),
-                                    onPressed: () {
-                                      setState(() {
-                                        _quantity++;
-                                        quantityController.text = '$_quantity';
-                                      });
-                                    },
-                                  ),
-                                ],
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () {
+                                  setState(() {
+                                    _quantity++;
+                                    quantityController.text = '$_quantity';
+                                  });
+                                },
                               ),
                             ],
                           ),
-                        ),
-                        OutlinedButton(
-                          onPressed: () {
-                            final authManager = context.read<AuthManager>();
-                            final cartManager = context.read<CartManager>();
-                            if (authManager.isAuth) {
-                              cartManager.addCart(product, _quantity);
-                              Future.delayed(const Duration(seconds: 1), () {
-                                Navigator.pop(context);
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text(
-                                    'Thành công!',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  backgroundColor: Color.fromARGB(255, 255, 255, 255), // Màu nền của SnackBar
-                                  duration: Duration(seconds: 2), // Thời gian hiển thị
-                                  behavior: SnackBarBehavior.floating, // Hiển thị ở giữa màn hình
-                                ),
-                              );
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  content: const Text('Bạn cần đăng nhập để sử dụng chức năng này.'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop(); 
-                                      },
-                                      child: const Text('Đóng'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pushNamed(
-                                          AuthScreen.routeName,
-                                        );
-                                      },
-                                      child: const Text('Đăng nhập'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }
-                            
-                          }, 
-                          child: const Text(
-                            'Thêm vào giỏ hàng',
-                            style: TextStyle(color: Color.fromARGB(255, 197, 85, 41), fontSize: 20),
-                          ),
-                        )
-                      ]
+                        ],
+                      ),
                     ),
-                  );
-                },
+                    OutlinedButton(
+                      onPressed: () {
+                        final authManager = context.read<AuthManager>();
+                        final cartManager = context.read<CartManager>();
+                        if (authManager.isAuth) {
+                          cartManager.addCart(product, _quantity);
+                          Future.delayed(const Duration(seconds: 1), () {
+                            Navigator.pop(context);
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Thêm giỏ hàng thành công!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              backgroundColor: Color.fromARGB(255, 98, 98, 98),
+                              duration: Duration(seconds: 2),
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: const Text('Bạn cần đăng nhập để sử dụng chức năng này.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); 
+                                  },
+                                  child: const Text('Đóng'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                      AuthScreen.routeName,
+                                    );
+                                  },
+                                  child: const Text('Đăng nhập'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                        
+                      }, 
+                      child: const Text(
+                        'Thêm vào giỏ hàng',
+                        style: TextStyle(color: Color.fromARGB(255, 197, 85, 41), fontSize: 20),
+                      ),
+                    )
+                  ]
+                ),
               );
             },
-            style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-            ),
-            icon: const Icon(Icons.shopping_cart, color: Color.fromARGB(255, 255, 255, 255), ),
-            label: const Text(
-              'Thêm vào giỏ hàng',
-              style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 20),
-            ),
-          ),
-        ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+          color: const Color.fromARGB(255, 247, 167, 46),
+          height: 60,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.shopping_cart, color: Color.fromARGB(255, 255, 255, 255), ),
+              Text(
+                'Thêm vào giỏ hàng',
+                style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 20),
+              ),
+            ],
+          ),              
+        ),          
+      ),    
     );
   }
 }

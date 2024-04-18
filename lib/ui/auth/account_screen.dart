@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:ct484_project/ui/auth/auth_manager.dart';
 import 'package:ct484_project/ui/auth/auth_screen.dart';
 import 'package:ct484_project/ui/orders/orders_screen.dart';
@@ -74,7 +76,7 @@ class Auth extends StatelessWidget {
               OrdersScreen.routeName,
             );
           },
-          icon: const Icon(Icons.document_scanner_sharp),
+          icon: const Icon(Icons.article_outlined),
           text: const Text('Đơn hàng của bạn'),
         ),
         CardItem(
@@ -105,17 +107,22 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        width: double.infinity,
-        child: TextButton.icon(
-          onPressed: onPressed,
-          icon: icon ?? Icon(Icons.error),
-          label: text ?? Text('Error'),
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              icon ?? const Icon(Icons.error),
+              text ?? const Text('Error'),
+            ],
+          ),
         ),
       ),
-    );
+    );    
   }
 }

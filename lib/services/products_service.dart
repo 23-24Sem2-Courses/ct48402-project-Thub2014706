@@ -38,7 +38,6 @@ class ProductsService extends FirebaseService {
     try {
       final response = await httpFetch(
         '$databaseUrl/favorite/$userId/$productId.json?auth=$token',
-        method: HttpMethod.get,
       );
       print(response);
       if (response != null) {

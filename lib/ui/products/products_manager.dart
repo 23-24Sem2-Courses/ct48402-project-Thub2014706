@@ -88,8 +88,9 @@ class ProductsManager with ChangeNotifier {
   }
 
   Future<void> deleteFavorite(String id) async {
-    await _productsService.deleteFavorite(id);
+    final index = _items.indexWhere((element) => element.id == id);
+    _items.removeAt(index);
     notifyListeners();
-    
+    await _productsService.deleteFavorite(id);   
   }
 }

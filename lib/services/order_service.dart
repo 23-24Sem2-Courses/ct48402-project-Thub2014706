@@ -27,6 +27,8 @@ class OrderService extends FirebaseService {
           })
         );
       });
+      order.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+      
       return order;
     } catch (e) {
       print(e);

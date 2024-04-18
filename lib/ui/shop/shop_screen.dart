@@ -39,22 +39,22 @@ class _ShopScreenState extends State<ShopScreen> {
                 image: AssetImage('assets/images/logo.png'),
                 width: 40,
                 height: 40,
-                fit: BoxFit.cover, // Cách hình ảnh được căn chỉnh trong không gian được chỉ định
+                fit: BoxFit.cover,
                 alignment: Alignment.center, // Căn chỉnh hình ảnh trong không gian được chỉ định
               ),
               Container(
                 width: 230,
                 height: 35,
-                margin: const EdgeInsets.only(left: 10), // margin để tạo khoảng cách giữa ô tìm kiếm và các phần tử khác
+                margin: const EdgeInsets.only(left: 10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20), 
                   boxShadow: [
                     BoxShadow(
                       color: const Color.fromARGB(255, 83, 82, 82).withOpacity(0.5), // màu đổ bóng
-                      spreadRadius: 2, // độ lan rộng của bóng
-                      blurRadius: 5, // độ mờ của bóng
-                      offset: const Offset(0, 3), // vị trí của bóng
+                      spreadRadius: 2, 
+                      blurRadius: 5, 
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -69,7 +69,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         decoration: InputDecoration(
                           hintText: 'Tìm kiếm...',
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 9), // Đặt chiều cao cho `TextField`
+                          contentPadding: EdgeInsets.symmetric(vertical: 9),
                         ),
                       ),
                     ),
@@ -80,7 +80,6 @@ class _ShopScreenState extends State<ShopScreen> {
                 icon: const Icon(Icons.favorite),
                 color: Colors.white,
                 onPressed: () {
-                  // context.read<AuthManager>().logout();
                 },
               ),
               Consumer<CartManager>(
@@ -113,16 +112,9 @@ class _ShopScreenState extends State<ShopScreen> {
               future: _fetchProducts,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return SingleChildScrollView(
-                    child: ValueListenableBuilder(
-                      valueListenable: _selectType,
-                      builder: (context, type, child) {
-                        return Container(
-                          child: ProductsGrid()
-                        );
-                      },
-                    )                    
-                  );                  
+                  return Container(
+                    child: ProductsGrid()
+                  );
                 }else {
                   return const Center(
                     child: CircularProgressIndicator(),
@@ -133,10 +125,10 @@ class _ShopScreenState extends State<ShopScreen> {
           ],
         ),
       )
-      
-          
+              
     );
   }
+  
   Widget _typeProduct() {
     List<String> items =  ['Moraine', 'Melissani', 'Sicily', 'Kashmir', 'Weimar'];
     return Container(
@@ -158,7 +150,6 @@ class _ShopScreenState extends State<ShopScreen> {
                       } else {
                         _selectType.value = null;
                       }
-                      // print(selectType);
                     });
                   },
                   child: Container(
@@ -220,13 +211,11 @@ class _ShopScreenState extends State<ShopScreen> {
                 width: MediaQuery.of(context).size.width,
                 margin: const  EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
-                  // color: Colors.amber
                   image: DecorationImage(
-                    image: AssetImage('assets/images/banner${i}.jpg'), 
+                    image: AssetImage('assets/images/banner$i.jpg'), 
                     fit: BoxFit.cover, 
                   )
                 ),
-                // child: Text('text $i', style: TextStyle(fontSize: 16.0),)
               );
             },
           );

@@ -1,6 +1,4 @@
-import 'package:ct484_project/ui/products/edit_product_screen.dart';
 import 'package:ct484_project/ui/products/favorite_tile.dart';
-import 'package:ct484_project/ui/products/product_list_tile.dart';
 import 'package:ct484_project/ui/products/products_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,7 +45,6 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final productsManager = ProductsManager();
 
     return Consumer<ProductsManager>(
       builder: (context, productsManager, child) {
